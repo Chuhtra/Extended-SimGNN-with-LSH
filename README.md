@@ -86,7 +86,7 @@ Training a SimGNN model is handled by the `src/main.py` script which provides th
 ### Examples TODO
 The following commands learn a neural network and score on the test set. Training a SimGNN model on the default dataset.
 ```
-python src/main.py
+p ython src/main.py
 ```
 <p align="center">
 <img style="float: center;" src="images/simgnn_run.png">
