@@ -13,7 +13,7 @@ The paper's original reference implementation is accessible [[here]](https://git
 
 
 <p align="center">
-  <img width="800" src="simgnn.jpg">
+  <img width="800" src="images/simgnn.jpg">
 </p>
 <p align="justify">
   
@@ -89,7 +89,7 @@ The following commands learn a neural network and score on the test set. Trainin
 python src/main.py
 ```
 <p align="center">
-<img style="float: center;" src="simgnn_run.png">
+<img style="float: center;" src="images/simgnn_run.png">
 </p>
 
 Training a SimGNN model for a 1000 epochs with a batch size of 512.
