@@ -11,14 +11,13 @@ This implementation was written and used to conduct experiments for my bachelor 
 
 The paper's original reference implementation is accessible [[here]](https://github.com/yunshengb/SimGNN) in Tensorflow.
 
-
+### Example illustration of the pipeline
 <p align="center">
-  <img width="800" src="images/simgnns+lsh.png">  
-  <figcaption style="text-align:center">Fig. - Example illustration of the pipeline.</figcaption>
+  <img width="800" src="images/simgnns+lsh.png">
 </p>
 <p align="justify">
   
-### Requirements TODO
+### Requirements
 The codebase is implemented in **Python 3.6** and needed package versions used for development are below. **CUDA 10.1** needs to be installed.
 ```
 lshashpy3==0.0.8
@@ -44,7 +43,9 @@ To get up and running:
     - Note: For torch-geometric package explicitly install version **1.4.3**.
 - Install **additional packages** by utilizing the [_extra_packages.txt_](https://github.com/Chuhtra/Extended-SimGNN-with-LSH/blob/master/extra_packages.txt) file with `pip install -r extra_packages.txt`.
 
-### Notes on source code TODO
+### Notes on source code
+- To get the information of the result files in `example_results folder`, the wanted `temp_runfiles (Dataset)` folder needs to be moved to the same level with the `src` folder, and run the `mainForResults.py` file.
+  - Caution: Running the `main.py` script with Dataset A, always cleans the `temp_runfiles (A)` folder.
 - The pipeline is currently not compatible with PyGeometric beyond version 1.4.3.
 - **Caution:** In order for LINUX dataset to run with PyGeometric v.1.4.3, a manual edit must be done in the code.
     - Specifically, in `ged_dataset.py` and line 157 (see the commit that fixed it for v.1.5.0 [here](https://github.com/rusty1s/pytorch_geometric/commit/9d01a7bc482a45b05a9d7fadc36d72b75e0766e5)).
@@ -53,26 +54,27 @@ To get up and running:
 - The code for generating and using synthetic data and for the 'measure time' functionality are removed because I didn't test it, but it might turn out useful in the future.
 - Also some the code of some early tries to incorporate [GatedGCN](https://arxiv.org/abs/1711.07553), is left in comments.
 
-### Datasets TODO
-The datasets are taken with the help of [GEDDataset](https://pytorch-geometric.readthedocs.io/en/latest/modules/datasets.html#torch_geometric.datasets.GEDDataset),
-where the databases specified in the [original repository](https://github.com/yunshengb/SimGNN) with GED-values are loaded. 
-Currently AIDS700nef, LINUX, ALKANE and IMDBMulti databases are supported.
+### Datasets
+The datasets are loaded with the help of [GEDDataset](https://pytorch-geometric.readthedocs.io/en/latest/modules/datasets.html#torch_geometric.datasets.GEDDataset),
+where the databases specified in the [original repository](https://github.com/yunshengb/SimGNN) with GED-values are used. 
+Currently AIDS700nef, LINUX and IMDBMulti databases are supported.
 
-### Options TODO
+### Options
 Training a SimGNN model is handled by the `src/main.py` script which provides the following command line arguments.
 
-#### Input and output options TODO
+#### Input and output options for main.py
 ```
-  --database    STR     Name of the dataset to be used.         Default is `AIDS700nef`.
-  --plot        BOOL    Plot mse values during the learning.    Default is False.
+  --dataset               STR         Name of the dataset to be used.          Default is `AIDS700nef`.
+  --plot-loss             BOOL        Plot mse values during the learning.     Default is False.
 ```
-#### Model options TODO
+#### Model options
 ```
-  --diffpool              BOOL        Differentiable pooling.                  Default is False.
-  --gnn-operator          STR         Type of gnn operator.                    Default is gcn.
+  --diffpool              BOOL        Differentiable pooling.                  Default is True.
+  --gnn-operator          STR         Type of gnn operator.                    Default is gin.
+  --use-lsh               BOOL        Flag for using or not the LSH model.     Default is True.
   --filters-1             INT         Number of filter in 1st GNN layer.       Default is 64.
   --filters-2             INT         Number of filter in 2nd GNN layer.       Default is 32. 
-  --filters-3             INT         Number of filter in 3rd GNN layer.       Default is 16.
+  --filters-3             INT         Number of filter in 3rd GNN layer.       Default is 32.
   --tensor-neurons        INT         Neurons in tensor network layer.         Default is 16.
   --bottle-neck-neurons   INT         Bottle neck layer neurons.               Default is 16.
   --bins                  INT         Number of histogram bins.                Default is 16.
@@ -80,6 +82,6 @@ Training a SimGNN model is handled by the `src/main.py` script which provides th
   --epochs                INT         Number of SimGNN training epochs.        Default is 350.
   --dropout               FLOAT       Dropout rate.                            Default is 0.
   --learning-rate         FLOAT       Learning rate.                           Default is 0.001.
-  --weight-decay          FLOAT       Weight decay.                            Default is 10^-5.
-  --histogram             BOOL        Include histogram features.              Default is False.
+  --weight-decay          FLOAT       Weight decay.                            Default is 5*10^-4.
+  --histogram             BOOL        Include histogram features.              Default is True.
 ```
