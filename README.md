@@ -13,7 +13,7 @@ The paper's original reference implementation is accessible [[here]](https://git
 
 
 <p align="center">
-  <img width="800" src="images/simgnn.jpg">
+  <img width="800" src="images/simgnns+lsh.png">
 </p>
 <p align="justify">
   
