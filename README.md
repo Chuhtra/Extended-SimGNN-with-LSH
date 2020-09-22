@@ -31,7 +31,7 @@ tqdm==4.48.2
 ```
 Other packages like `numpy` or `matplotlib` are installed as dependencies.
 
-### Installation guide:
+### Installation guide (for systems with CUDA compatible GPU):
 To get up and running:
 
 - Ensure that **CUDA** is properly installed on your system, and that **Python** is installed in your system.
