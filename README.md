@@ -13,7 +13,8 @@ The paper's original reference implementation is accessible [[here]](https://git
 
 
 <p align="center">
-  <img width="800" src="images/simgnns+lsh.png">
+  <img width="800" src="images/simgnns+lsh.png">  
+  <figcaption>Fig. - Example illustration of the pipeline.</figcaption>
 </p>
 <p align="justify">
   
