@@ -28,7 +28,8 @@ def main():
 
     use_pretrained = False  # To determine whether a pre-trained model will be used.
     path = "../saved_model_state/general_simgnn_embSize{}.pt".format(trainer.embeddings_size)
-
+    utils.fixpath(path)
+    
     #TRAIN
     if use_pretrained is True:
         print("Pre-trained mode: load an already fit state instead of training.")
