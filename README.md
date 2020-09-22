@@ -7,7 +7,7 @@ The DL model used is based on a PyTorch Geometric implementation of "SimGNN: A N
 
 This implementation was written and used to conduct experiments for my bachelor thesis "Pair-wise graph similarity learning with Graph Convolutional Networks and Locality Sensitive Hashing" at the [Informatics Department](https://www.dept.aueb.gr/en/cs) of Athens University of Economics and Business [(AUEB)](https://www.aueb.gr/en), under the mentorship of [Prof. Ioannis Kotidis](https://www.aueb.gr/en/faculty_page/kotidis-ioannis). 
 
-The paper's original reference implementation is accessible [[here]](https://github.com/yunshengb/SimGNN) in Tensorflow.
+The paper's original reference implementation is accessible [here](https://github.com/yunshengb/SimGNN) in Tensorflow.
 
 ### Example illustration of the pipeline
 <p align="center">
@@ -35,10 +35,19 @@ Other packages like `numpy` or `matplotlib` are installed as dependencies.
 To get up and running:
 
 - Ensure that **CUDA** is properly installed on your system, and that **Python** is installed in your system.
-- Create and activate a **virtualenv** with the correct Python version, to continue with the installation.
+  - Check you have the versions mentioned above.
+- Create and activate a **virtualenv** with the correct Python version, to continue with the installation. ([Help](https://www.youtube.com/watch?v=N5vscPTWKOk))
 - Install **torch** with `pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html`. This command is based on [this site](https://pytorch.org/get-started/previous-versions/#v150).
 - Install **torch-geometric** packages, as written [here](https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html#installation-via-binaries).
     - Note: For torch-geometric package explicitly install version **1.4.3**.
+    - The commands:
+    ```
+    pip install torch-scatter==2.0.5+cu101 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
+    pip install torch-sparse==0.6.7+cu101 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
+    pip install torch-cluster==1.5.7+cu101 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
+    pip install torch-spline-conv==1.2.0+cu101 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
+    pip install torch-geometric==1.4.3
+    ```
 - Install **additional packages** by utilizing the [_extra_packages.txt_](https://github.com/Chuhtra/Extended-SimGNN-with-LSH/blob/master/extra_packages.txt) file with `pip install -r extra_packages.txt`.
 
 ### Notes on source code
