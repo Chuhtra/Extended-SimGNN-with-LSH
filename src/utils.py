@@ -1,25 +1,110 @@
-import json
-import math
-import numpy as np
-import statistics
-import networkx as nx
 import torch
-import random
+import numpy as np
+import math
 from texttable import Texttable
-from torch_geometric.utils import erdos_renyi_graph, to_undirected, to_networkx
-from torch_geometric.data import Data
-import matplotlib.pyplot as plt
+import networkx as nx
+from torch_geometric.utils import to_networkx
 
+##-----------------------------------------------------files
+def fixpath(path):
+    # Create path directories if missing
+    from pathlib import Path
+    Path(path).mkdir(parents=True, exist_ok=True)
+
+def saveToFile(data, nameOfFile, path, param_type=None):
+    fixpath(path)
+
+    filename = path + nameOfFile
+    if param_type is None:  # default is nd array
+        # open a binary file in write mode
+        file = open(filename, "wb")
+        # save array to the file
+        np.save(file, data)
+    elif param_type == 'dict' or param_type == 'str':  # save param_type to pickle
+        import pickle
+        filename = filename + '.pkl'
+        # open a binary file in write mode
+        file = open(filename, "wb")
+        pickle.dump(data, file, pickle.HIGHEST_PROTOCOL)
+    elif param_type == 'csv':
+        import csv
+        file = open(filename + '.csv', "w", newline='')
+        writer = csv.writer(file)
+        writer.writerows(data)
+    elif param_type == 'plot':
+        fixpath(path)
+        path += nameOfFile + ".png"
+        data.savefig(path, bbox_inches='tight')  # save as png
+        return
+    # close the file
+    file.close()
+
+
+def readFromFile(nameOfFile, path, param_type=None):
+    filename = path + nameOfFile
+    if param_type is None:  # default is nd array
+        # open the file in read binary mode
+        file = open(filename, "rb")
+        # read the file to numpy array
+        data = np.load(file, allow_pickle=True)
+    elif param_type == 'dict' or param_type == 'str':  # load pickle to param_type
+        import pickle
+        filename = filename + '.pkl'
+        # open the file in read binary mode
+        file = open(filename, "rb")
+        data = pickle.load(file)
+    # close the file
+    file.close()
+
+    return data
+
+def clearDataFolder(path):
+    import os, shutil
+    try:
+        folder = os.listdir(path)
+    except FileNotFoundError:
+        return
+    else:
+        if len(folder) != 0:
+            for filename in folder:
+                file_path = os.path.join(path, filename)
+                try:
+                    if os.path.isfile(file_path) or os.path.islink(file_path):
+                        os.unlink(file_path)
+                    elif os.path.isdir(file_path):
+                        shutil.rmtree(file_path)
+                except Exception as e:
+                    print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+##-----------------------------------------------------printer
 def tab_printer(args):
     """
     Function to print the logs in a nice tabular format.
-    :param args: Parameters used for the model.
+    :param args: Parameters used for the model - Namespace or dictionary.
     """
-    args = vars(args)
+    # This if-else distiction is done for LSH variables as a temporary solution. Because they are not printed at the
+    # start.
+    if isinstance(args, dict):
+        title = 'LSH '
+    else:
+        title = ''
+        args = vars(args)
+
     keys = sorted(args.keys())
-    t = Texttable() 
-    t.add_rows([["Parameter", "Value"]] +  [[k.replace("_"," ").capitalize(), args[k]] for k in keys])
+    t = Texttable()
+    t.add_rows([["{}Parameter".format(title), "Value"]] + [[k.replace("_", " ").capitalize(), args[k]] for k in keys])
+
+    print("\n")
     print(t.draw())
+    print("\n")
+
+##-----------------------------------------------------math
+def getSSE(dif):
+    return np.sum(np.square(dif))
+
+def getAvRelEr(dif, target):
+    return np.mean(np.abs(dif) / target)
+
 
 def calculate_ranking_correlation(rank_corr_function, prediction, target):
     """
@@ -36,8 +121,9 @@ def calculate_ranking_correlation(rank_corr_function, prediction, target):
     temp = target.argsort()
     r_target = np.empty_like(temp)
     r_target[temp] = np.arange(len(target))
-    
+
     return rank_corr_function(r_prediction, r_target).correlation
+
 
 def calculate_prec_at_k(k, prediction, target):
     """
@@ -45,117 +131,33 @@ def calculate_prec_at_k(k, prediction, target):
     """
     best_k_pred = prediction.argsort()[:k]
     best_k_target = target.argsort()[:k]
-    
+
     return len(set(best_k_pred).intersection(set(best_k_target))) / k
 
 def denormalize_sim_score(g1, g2, sim_score):
     """
-    Converts normalized similar into ged.
+    Converts normalized similarity into ged.
     """
     return denormalize_ged(g1, g2, -math.log(sim_score, math.e))
+
 
 def denormalize_ged(g1, g2, nged):
     """
     Converts normalized ged into ged.
     """
-    return round(nged * (g1.num_nodes + g2.num_nodes) / 2)
-    
-def gen_synth_data(count=200, nl=None, nu=50, p=0.5, kl=None, ku=2):
-    """
-    Generating synthetic data based on Erdos–Renyi model.
-    :param count: Number of graph pairs to generate.
-    :param nl: Minimum number of nodes in a source graph.
-    :param nu: Maximum number of nodes in a source graph.
-    :param p: Probability of an edge.
-    :param kl: Minimum number of insert/remove edge operations on a graph.
-    :param ku: Maximum number of insert/remove edge operations on a graph.
-    """
-    if nl is None:
-        nl = nu
-    if kl is None:
-        kl = ku
-    
-    data = []
-    data_new = []
-    mat = torch.full((count, count), float('inf'))
-    norm_mat = torch.full((count, count), float('inf'))
-    
-    for i in range(count):
-        n = random.randint(nl, nu)
-        edge_index = erdos_renyi_graph(n, p)
-        x = torch.ones(n, 1)
-        
-        g1 = Data(x=x, edge_index=edge_index, i=torch.tensor([i]))
-        g2, ged = gen_pair(g1, kl, ku)
+    return round(nged * (g1.num_nodes + g2.num_nodes) / 2) if nged != np.inf else np.inf
 
-        data.append(g1)
-        data_new.append(g2)
-        mat[i, i] = ged
-        norm_mat[i, i] = ged / (0.5 * (g1.num_nodes + g2.num_nodes))
-            
-    return data, data_new, mat, norm_mat
 
-def gen_pairs(graphs, kl=None, ku=2):
-    gen_graphs_1 = []
-    gen_graphs_2 = []
-
-    count = len(graphs)
-    mat = torch.full((count, count), float('inf'))
-    norm_mat = torch.full((count, count), float('inf'))
-    
-    for i, g in enumerate(graphs):
-        g = g.clone()
-        g.i = torch.tensor([i])
-        g2, ged = gen_pair(g, kl, ku)
-        gen_graphs_1.append(g)
-        gen_graphs_2.append(g2)
-        mat[i, i] = ged
-        norm_mat[i, i] = ged / (0.5 * (g.num_nodes + g2.num_nodes))
-    
-    return gen_graphs_1, gen_graphs_2, mat, norm_mat
-        
-def to_directed(edge_index):
-    row, col = edge_index
-    mask = row < col
-    row, col = row[mask], col[mask]
-    return torch.stack([row, col], dim=0)
-
-def gen_pair(g, kl=None, ku=2):
-    if kl is None:
-        kl = ku
-    
-    directed_edge_index = to_directed(g.edge_index)
-    
-    n = g.num_nodes
-    num_edges = directed_edge_index.size(1)
-    to_remove = random.randint(kl, ku)
-    
-    edge_index_n = directed_edge_index[:,torch.randperm(num_edges)[to_remove:]]
-    if edge_index_n.size(1) != 0:
-        edge_index_n = to_undirected(edge_index_n)
-    
-    row, col = g.edge_index
-    adj = torch.ones((n, n), dtype=torch.uint8)
-    adj[row, col] = 0
-    non_edge_index = adj.nonzero().t()
-    
-    directed_non_edge_index = to_directed(non_edge_index)
-    num_edges = directed_non_edge_index.size(1)
-
-    to_add = random.randint(kl, ku)
-    
-    edge_index_p = directed_non_edge_index[:, torch.randperm(num_edges)[:to_add]]
-    if edge_index_p.size(1):
-        edge_index_p = to_undirected(edge_index_p)
-    edge_index_p = torch.cat((edge_index_n, edge_index_p), 1)
-    
-    if hasattr(g, 'i'):
-        g2 = Data(x=g.x, edge_index=edge_index_p, i=g.i)
-    else:
-        g2 = Data(x=g.x, edge_index=edge_index_p)
-    
-    g2.num_nodes = g.num_nodes
-    return g2, to_remove + to_add
+##-----------------------------------------------------graph
+def PyG2NetworkxG(g, aids=False):
+    y = to_networkx(g, to_undirected=(True if g.is_undirected() else False))
+    if aids:
+        label_list = aids_labels(g)
+        for i, _ in enumerate(y.nodes):
+            y.nodes[i]['label'] = label_list[i]
+    # for i in y.nodes:
+    #    y.nodes[i]['name'] = i
+    return y
 
 def aids_labels(g):
     types = [
@@ -163,47 +165,23 @@ def aids_labels(g):
         'Cu', 'Ho', 'Pd', 'Ru', 'Pt', 'Sn', 'Li', 'Ga', 'Tb', 'As', 'Co', 'Pb',
         'Sb', 'Se', 'Ni', 'Te'
     ]
-    
+
     return [types[i] for i in g.x.argmax(dim=1).tolist()]
 
-def draw_graphs(glist, aids=False):
-    for i, g in enumerate(glist):
-        plt.clf()
-        G = to_networkx(g).to_undirected()
-        if aids:
-            label_list = aids_labels(g)
-            labels = {}
-            for j, node in enumerate(G.nodes()):
-                labels[node] = label_list[j]
-            nx.draw(G, labels=labels)
-        else:
-            nx.draw(G)
-        plt.savefig('graph{}.png'.format(i))
+# This is the function which checks for equality of labels
+def node_match_equality(node1, node2):
+    x = node1['label'] == node2['label']
+    return x
 
-def draw_weighted_nodes(filename, g, model):
-    """
-    Draw graph with weighted nodes (for AIDS).
-    """
-    features = model.convolutional_pass(g.edge_index, g.x)
-    coefs = model.attention.get_coefs(features)
-    
-    print(coefs)
-    
-    plt.clf()
-    G = to_networkx(g).to_undirected()
-    
-    label_list = aids_labels(g)
-    labels = {}
-    for i, node in enumerate(G.nodes()):
-        labels[node] = label_list[i]
-    
-    vmin = coefs.min().item() - 0.005
-    vmax = coefs.max().item() + 0.005
+def calculate_ged_NX(g1, g2, aids=False):
+    if aids:
+        x = node_match_equality
+    else:
+        x = None
+    return nx.graph_edit_distance(g1, g2, node_match=x)
 
-    nx.draw(G, node_color=coefs.tolist(), cmap=plt.cm.Reds, labels=labels, vmin=vmin, vmax=vmax)
-
-    # sm = plt.cm.ScalarMappable(cmap=plt.cm.Reds, norm=plt.Normalize(vmin=vmin, vmax=vmax))
-    # sm.set_array(coefs.tolist())
-    # cbar = plt.colorbar(sm)
-
-    plt.savefig(filename)
+def to_directed(edge_index):
+    row, col = edge_index
+    mask = row < col
+    row, col = row[mask], col[mask]
+    return torch.stack([row, col], dim=0)
