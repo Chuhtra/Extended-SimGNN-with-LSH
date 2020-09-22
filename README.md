@@ -11,7 +11,7 @@ The paper's original reference implementation is accessible [here](https://githu
 
 ### Example illustration of the pipeline
 <p align="center">
-  <img width="800" src="images/simgnns+lsh.png">
+  <img width="800" src="simgnns+lsh.png">
 </p>
 <p align="justify">
   
