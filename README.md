@@ -1,13 +1,11 @@
 Extended SimGNN with LSH
 ============================================
 
-## *** *Repository Under Construction* ***
-
 A pair-wise graph similarity learning pipeline utilizing Deep Learning (DL) and Locality Sensitive Hashing (LSH). 
 
 The DL model used is based on a PyTorch Geometric implementation of "SimGNN: A Neural Network Approach to Fast Graph Similarity Computation" (WSDM 2019) [[Paper]](http://web.cs.ucla.edu/~yzsun/papers/2019_WSDM_SimGNN.pdf). While the initial implementation is done in [[benedekrozemberczki/SimGNN]](https://github.com/benedekrozemberczki/SimGNN) the basis implementation for this repository is the [[gospodima/Extended-SimGNN]](https://github.com/gospodima/Extended-SimGNN) extention that added the Graph Isomorphism Operator from the [“How Powerful are Graph Neural Networks?”](https://arxiv.org/abs/1810.00826) paper and the Differentiable Pooling Operator from the ["Hierarchical Graph Representation Learning with Differentiable Pooling"](https://arxiv.org/abs/1806.08804) paper.
 
-This implementation was written and used to conduct experiments for my bachelor thesis "Efficient pair-wise graph similarity learning with Graph Convolutional Networks and Locality Sensitive Hashing" at the [Informatics Department](https://www.dept.aueb.gr/en/cs) of Athens University of Economics and Business [(AUEB)](https://www.aueb.gr/en), under the mentorship of [Prof. Ioannis Kotidis](https://www.aueb.gr/en/faculty_page/kotidis-ioannis). 
+This implementation was written and used to conduct experiments for my bachelor thesis "Pair-wise graph similarity learning with Graph Convolutional Networks and Locality Sensitive Hashing" at the [Informatics Department](https://www.dept.aueb.gr/en/cs) of Athens University of Economics and Business [(AUEB)](https://www.aueb.gr/en), under the mentorship of [Prof. Ioannis Kotidis](https://www.aueb.gr/en/faculty_page/kotidis-ioannis). 
 
 The paper's original reference implementation is accessible [[here]](https://github.com/yunshengb/SimGNN) in Tensorflow.
 
