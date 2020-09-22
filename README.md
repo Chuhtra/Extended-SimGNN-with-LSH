@@ -54,8 +54,8 @@ To get up and running:
 - To get the information of the result files in `example_results` folder, the wanted `temp_runfiles (Dataset)` folder needs to be moved to the same level with the `src` folder, and run the `mainForResults.py` file.
   - Caution: Running the `main.py` script with Dataset A, always cleans the `temp_runfiles (A)` folder.
 - The pipeline is currently not compatible with PyGeometric beyond version 1.4.3.
-- **Caution:** In order for LINUX dataset to run with PyGeometric v.1.4.3, a manual edit must be done in the code.
-    - Specifically, in `ged_dataset.py` and line 157 (see the commit that fixed it for v.1.5.0 [here](https://github.com/rusty1s/pytorch_geometric/commit/9d01a7bc482a45b05a9d7fadc36d72b75e0766e5)).
+- **Caution:** In order to run the pipeline (with PyGeometric v.1.4.3), a manual edit must be done in the PyTorch Geometric code.
+    - Specifically, in file `ged_dataset.py` and line 157 (see the commit that fixed it for v.1.5.0 [here](https://github.com/rusty1s/pytorch_geometric/commit/9d01a7bc482a45b05a9d7fadc36d72b75e0766e5)).
     - Relevant [issue](https://github.com/rusty1s/pytorch_geometric/issues/1189).
     - This is of course only a temporary fix to get the code running. 
 - The code for generating and using synthetic data and for the 'measure time' functionality are removed because I didn't test it, but it might turn out useful in the future.
