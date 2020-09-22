@@ -115,17 +115,16 @@ def parameter_parser():
     #                    help="Select to run with gpu or cpu. Default depends on existing CUDA installation.")
 
     parser.add_argument("--use-lsh",
-                        nargs="?",
-                        type=bool,
-                        default=True,  # True False
+                        dest="use_lsh",
+                        action="store_true",
                         help="Specify if LSH will be utilized. Default choice is to train WITH LSH.")
 
 
-    parser.set_defaults(histogram=True)  # True False
-    parser.set_defaults(diffpool=True)  # True False
+    parser.set_defaults(histogram=False)  # True False
+    parser.set_defaults(use_lsh=False)  # True False
+    parser.set_defaults(diffpool=False)  # True False
     parser.set_defaults(plot_loss=False)  # True False
-    parser.set_defaults(measure_time=False)
-    parser.set_defaults(notify=True)  # Default should be False
+    parser.set_defaults(notify=False)  
 
     # TODO add lsh variables as arguments conditional on --use-lsh
 
