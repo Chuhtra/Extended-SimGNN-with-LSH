@@ -14,7 +14,7 @@ The paper's original reference implementation is accessible [[here]](https://git
 
 <p align="center">
   <img width="800" src="images/simgnns+lsh.png">  
-  <figcaption>Fig. - Example illustration of the pipeline.</figcaption>
+  <figcaption style="text-align:center">Fig. - Example illustration of the pipeline.</figcaption>
 </p>
 <p align="justify">
   
@@ -82,30 +82,4 @@ Training a SimGNN model is handled by the `src/main.py` script which provides th
   --learning-rate         FLOAT       Learning rate.                           Default is 0.001.
   --weight-decay          FLOAT       Weight decay.                            Default is 10^-5.
   --histogram             BOOL        Include histogram features.              Default is False.
-```
-
-### Examples TODO
-The following commands learn a neural network and score on the test set. Training a SimGNN model on the default dataset.
-```
-p ython src/main.py
-```
-<p align="center">
-<img style="float: center;" src="images/simgnn_run.png">
-</p>
-
-Training a SimGNN model for a 1000 epochs with a batch size of 512.
-```
-python src/main.py --epochs 1000 --batch-size 512
-```
-Training a SimGNN on the LINUX dataset with histogram features, GIN instead of GCN and DiffPool instead of attention mechanism from the paper.
-```
-python src/main.py --database LINUX --histogram --gnn-operator gin --diffpool
-```
-Drawing up a graphic of mse values during the learning.
-```
-python src/main.py --plot
-```
-Increasing the learning rate and the dropout.
-```
-python src/main.py --learning-rate 0.01 --dropout 0.9
 ```
