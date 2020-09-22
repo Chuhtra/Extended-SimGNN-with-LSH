@@ -16,7 +16,7 @@ The paper's original reference implementation is accessible [here](https://githu
 <p align="justify">
   
 ### Requirements
-The codebase is implemented in **Python 3.6** and needed package versions used for development are below. **CUDA 10.1** needs to be installed.
+The codebase is implemented in **Python 3.6** and needed package versions used for development are below.
 ```
 lshashpy3==0.0.8
 texttable==1.6.2
@@ -31,10 +31,12 @@ tqdm==4.48.2
 ```
 Other packages like `numpy` or `matplotlib` are installed as dependencies.
 
-### Installation guide (for systems with CUDA compatible GPU):
+### Installation guide:
+Note: The steps below are for systems with a CUDA compatible GPU. While I didn't try it, replacing `+cu101` with `+cpu` in the below commands can also work.
+
 To get up and running:
 
-- Ensure that **CUDA** is properly installed on your system, and that **Python** is installed in your system.
+- Ensure that **CUDA 10.1** is properly installed on your system, and that **Python** is installed in your system.
   - Check you have the versions mentioned above.
 - Create and activate a **virtualenv** with the correct Python version, to continue with the installation. ([Help](https://www.youtube.com/watch?v=N5vscPTWKOk))
 - Install **torch** with `pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html`. This command is based on [this site](https://pytorch.org/get-started/previous-versions/#v150).
