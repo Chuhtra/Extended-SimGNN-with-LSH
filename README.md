@@ -78,9 +78,9 @@ Training a SimGNN model is handled by the `src/main.py` script which provides th
 ```
 #### Model options
 ```
-  --diffpool              BOOL        Differentiable pooling.                  Default is True.
+  --diffpool              BOOL        Differentiable pooling.                  Default is False.
   --gnn-operator          STR         Type of gnn operator.                    Default is gin.
-  --use-lsh               BOOL        Flag for using or not the LSH model.     Default is True.
+  --use-lsh               BOOL        Flag for using or not the LSH model.     Default is False.
   --filters-1             INT         Number of filter in 1st GNN layer.       Default is 64.
   --filters-2             INT         Number of filter in 2nd GNN layer.       Default is 32. 
   --filters-3             INT         Number of filter in 3rd GNN layer.       Default is 32.
@@ -92,5 +92,10 @@ Training a SimGNN model is handled by the `src/main.py` script which provides th
   --dropout               FLOAT       Dropout rate.                            Default is 0.
   --learning-rate         FLOAT       Learning rate.                           Default is 0.001.
   --weight-decay          FLOAT       Weight decay.                            Default is 5*10^-4.
-  --histogram             BOOL        Include histogram features.              Default is True.
+  --histogram             BOOL        Include histogram features.              Default is False.
 ```
+
+#### Example run
+
+To run the model with LINUX, using Diffpool, LSH and histogram use:
+`python main.py --dataset LINUX --diffpool --use-lsh --histogram`
