@@ -27,7 +27,10 @@ def main():
     trainer = SimGNNTrainer(args)
 
     use_pretrained = False  # To determine whether a pre-trained model will be used.
-    path = "../saved_model_state/general_simgnn_embSize{}.pt".format(trainer.embeddings_size)
+    
+    root = "../saved_model_state/"
+    utils.fixpath(root)
+    path = root + "general_simgnn_embSize{}.pt".format(trainer.embeddings_size)
     
     #TRAIN
     if use_pretrained is True:
