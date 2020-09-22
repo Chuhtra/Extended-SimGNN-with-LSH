@@ -31,7 +31,7 @@ torch-spline-conv==1.2.0
 torchvision==0.6.0+cu101
 tqdm==4.48.2
 ```
-Other packages like numpy or matplotlib are installed as dependencies.
+Other packages like `numpy` or `matplotlib` are installed as dependencies.
 
 ### Installation guide:
 To get up and running:
@@ -44,7 +44,7 @@ To get up and running:
 - Install **additional packages** by utilizing the [_extra_packages.txt_](https://github.com/Chuhtra/Extended-SimGNN-with-LSH/blob/master/extra_packages.txt) file with `pip install -r extra_packages.txt`.
 
 ### Notes on source code
-- To get the information of the result files in `example_results folder`, the wanted `temp_runfiles (Dataset)` folder needs to be moved to the same level with the `src` folder, and run the `mainForResults.py` file.
+- To get the information of the result files in `example_results` folder, the wanted `temp_runfiles (Dataset)` folder needs to be moved to the same level with the `src` folder, and run the `mainForResults.py` file.
   - Caution: Running the `main.py` script with Dataset A, always cleans the `temp_runfiles (A)` folder.
 - The pipeline is currently not compatible with PyGeometric beyond version 1.4.3.
 - **Caution:** In order for LINUX dataset to run with PyGeometric v.1.4.3, a manual edit must be done in the code.
