@@ -61,7 +61,7 @@ To get up and running:
     - Relevant [issue](https://github.com/rusty1s/pytorch_geometric/issues/1189).
     - This is of course only a temporary fix to get the code running. 
 - The code for generating and using synthetic data and for the 'measure time' functionality are removed because I didn't test it, but it might turn out useful in the future.
-- Also some the code of some early tries to incorporate [GatedGCN](https://arxiv.org/abs/1711.07553), is left in comments.
+- Also some the code of some early (incomplete) tries to incorporate [ResGatedGCN](https://arxiv.org/abs/1711.07553), is left in comments.
 
 ### Datasets
 The datasets are loaded with the help of [GEDDataset](https://pytorch-geometric.readthedocs.io/en/latest/modules/datasets.html#torch_geometric.datasets.GEDDataset),
