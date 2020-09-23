@@ -1,3 +1,7 @@
+'''
+Script to read and print the outputed results of previous runs of the main script.
+'''
+
 import torch
 import numpy as np
 import utils
