@@ -11,7 +11,7 @@ def main():
     """
     Parsing command line parameters, reading data, fitting and scoring a SimGNN model.
     """
-    answer = input("Are you sure you want to run the pipeline? Previous temp result files will be lost! (type yes)")
+    answer = input("Are you sure you want to run the pipeline? Previous temp result files for the chosen dataset will be lost! (type yes)")
     if answer != 'yes':
         import sys
         sys.exit()
